@@ -57,9 +57,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setLoading(false);
     };
     useEffect(() => {
-
         checkAuth();
-    }, []);
+    }, []); // Only run once on mount
 
 
     return (
