@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { apiFetch } from '../../utils/api';
 
 export const RegisterForm = () => {
     const [name, setName] = useState('');
@@ -13,10 +14,8 @@ export const RegisterForm = () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch('http://localhost:5001/api/auth/register', {
+            const response = await apiFetch('auth/register', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include', // Include cookies
                 body: JSON.stringify({ name, email, password })
             });
 

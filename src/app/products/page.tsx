@@ -4,6 +4,7 @@ import { ProductFilters } from '@/components/products/ProductFilters';
 import { ProductList } from '@/components/products/ProductList';
 import { ProductPagination } from '@/components/products/ProductPagination';
 import { useState, useEffect } from 'react';
+import { apiFetch } from '@/utils/api';
 
 // Define Product type
 interface Product {
@@ -42,10 +43,7 @@ const ProductsPage = () => {
       if (filters.minPrice) queryParams.append('minPrice', filters.minPrice);
       if (filters.maxPrice) queryParams.append('maxPrice', filters.maxPrice);
 
-      const response = await fetch(`http://localhost:5001/api/products?${queryParams}`, {
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      });
+      const response = await apiFetch(`products?${queryParams}`);
 
       if (!response.ok) {
         throw new Error('Failed to fetch products');

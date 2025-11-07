@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
+import { apiFetch } from '../utils/api';
 
 // Types
 interface CartItem {
@@ -61,9 +62,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5001/api/cart', {
-        credentials: 'include',
-      });
+      const response = await apiFetch('cart');
 
       if (response.ok) {
         const data = await response.json();
@@ -103,12 +102,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     try {
       console.log('Adding to cart:', { productId, quantity }); // Debug log
 
-      const response = await fetch('http://localhost:5001/api/cart/add', {
+      const response = await apiFetch('cart/add', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
         body: JSON.stringify({
           product_id: productId,
           quantity: quantity
@@ -140,12 +135,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:5001/api/cart/update/${cartItemId}`, {
+      const response = await apiFetch(`cart/update/${cartItemId}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
         body: JSON.stringify({ quantity })
       });
 
@@ -169,9 +160,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   // 🔥 REMOVE FROM CART
   const removeFromCart = async (cartItemId: number): Promise<boolean> => {
     try {
-      const response = await fetch(`http://localhost:5001/api/cart/remove/${cartItemId}`, {
+      const response = await apiFetch(`cart/remove/${cartItemId}`, {
         method: 'DELETE',
-        credentials: 'include',
       });
 
       if (response.ok) {
@@ -192,9 +182,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
   // 🔥 CLEAR CART
   const clearCart = async (): Promise<boolean> => {
     try {
-      const response = await fetch('http://localhost:5001/api/cart/clear', {
+      const response = await apiFetch('cart/clear', {
         method: 'DELETE',
-        credentials: 'include',
       });
 
       if (response.ok) {

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { tokenUtils } from "@/app/utils";
+import { apiFetch } from '../../utils/api';
 export const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -45,10 +46,8 @@ export const LoginForm = () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch('http://localhost:5001/api/auth/login', {
+            const response = await apiFetch('auth/login', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include', // Include cookies
                 body: JSON.stringify({ email, password })
             });
 

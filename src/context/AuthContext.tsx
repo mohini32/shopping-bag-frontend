@@ -1,6 +1,7 @@
 "use client";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { apiFetch } from '../utils/api';
 
 interface User {
     id: number;
@@ -32,9 +33,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const logout = async () => {
         // Call backend logout to clear cookie
         try {
-            await fetch('http://localhost:5001/api/auth/logout', {
-                method: 'POST',
-                credentials: 'include' // Include cookies
+            await apiFetch('auth/logout', {
+                method: 'POST'
             });
         } catch (error) {
             console.error('Logout error:', error);
@@ -44,9 +44,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
     const checkAuth = async () => {
         try {
-            const response = await fetch('http://localhost:5001/api/auth/profile', {
-                credentials: 'include' // Include cookies automatically
-            });
+            const response = await apiFetch('auth/profile');
             if (response.ok) {
                 const data = await response.json();
                 setUser(data.user);
